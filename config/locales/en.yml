@@ -4,5 +4,12 @@
 en:
   spree:
     stock_email:
+      sent_email: "Sent Emails"
+      requested_notifications: "Requested Notifications"
+      email_already_sent: "Email Sent"
+      notification_requested_at: "Notification Requested At"
+      email_sent_at: "Email sent at"
+      awaiting_users: "Total users awaiting for notification"
+      notified_users: "Total users notified"
       email:
-          subject: "Products are back in stock!"
+        subject: "Products are back in stock!"

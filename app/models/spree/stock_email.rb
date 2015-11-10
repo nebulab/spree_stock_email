@@ -24,6 +24,21 @@ class Spree::StockEmail < ActiveRecord::Base
     mark_as_sent
   end
 
+  def self.awaiting_users
+    Spree::StockEmail.where(sent_at: nil).size
+  end
+
+  def self.notified_users
+    Spree::StockEmail.where.not(sent_at: nil).size
+  end
+
+  def self.summary
+    Spree::StockEmail.all.
+    group_by { |e| e.variant_id }.
+    sort_by { |variant| variant.second.select { |stock_email| stock_email.sent_at.nil? }.size }.
+    reverse
+  end
+
   private
 
   def unique_variant_email

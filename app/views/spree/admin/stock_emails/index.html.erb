@@ -1,0 +1,144 @@
+<% content_for :page_title do %>
+  <%= plural_resource_name(Spree::StockEmail) %>
+<% end %>
+
+<% content_for :table_filter do %>
+  <div data-hook="admin_stock_emails_index_search">
+
+    <%= search_form_for [:admin, @search] do |f| %>
+      <div class="row">
+        <div class="date-range-filter col-md-8">
+          <div class="form-group">
+            <%= label_tag :q_created_at_gt, Spree.t(:notification_requested_at) %>
+            <div class="row no-padding-bottom">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <%= f.text_field :created_at_gt, :class => 'datepicker datepicker-from form-control', :value => params[:q][:created_at_gt], :placeholder => Spree.t(:start) %>
+                  <span class="input-group-addon">
+                    <i class="icon icon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group">
+                  <%= f.text_field :created_at_lt, :class => 'datepicker datepicker-to form-control', :value => params[:q][:created_at_lt], :placeholder => Spree.t(:stop) %>
+                  <span class="input-group-addon">
+                    <i class="icon icon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="field checkbox">
+            <label>
+              <%= f.check_box :sent_at_null, {:checked => params[:q][:sent_at_null] == '0'}, '0', '1' %>
+              <%= Spree.t(:email_already_sent) %>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <%= label_tag :q_email, Spree.t(:email) %>
+            <%= f.text_field :email_cont, tabindex: 1, class: "form-control js-quick-search-target" %>
+          </div>
+          <div class="form-group">
+            <%= label_tag :q_variant_id, Spree.t(:variant) %>
+            <%= f.select :variant_id_eq, Spree::Variant.all.collect { |v| [ "#{v.name} (#{v.sku})", v.id ] } , {:include_blank => true}, :class => 'select2 js-filterable' %>
+          </div>
+        </div>
+      </div>
+
+      <div data-hook="admin_stock_emails_index_search_buttons" class="form-actions">
+        <%= button Spree.t(:filter_results), 'search' %>
+      </div>
+
+    <% end %>
+  </div>
+<% end %>
+
+<%= render partial: 'spree/admin/shared/index_table_options', locals: { collection: @collection } %>
+
+<% if @collection.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th><%= Spree.t(:email) %></th>
+        <th><%= Spree.t(:sku) %></th>
+        <th><%= Spree.t(:variant) %></th>
+        <th><%= sort_link @search, :created_at, Spree.t(:notification_requested_at) %></th>
+        <th><%= sort_link @search, :sent_at, Spree.t(:email_sent_at) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @collection.each do |stock_email| %>
+        <tr id="<%= spree_dom_id stock_email %>">
+          <td><%= stock_email.email %></td>
+          <td><%= stock_email.variant.sku %></td>
+          <td><%= link_to stock_email.variant.name, edit_admin_product_variant_path(stock_email.variant.product.slug, stock_email.variant.id) %></td>
+          <td><%= l stock_email.created_at, format: :short %></td>
+          <td>
+            <% if stock_email.sent_at.blank? %>
+              -
+            <% else %>
+              <%= l stock_email.sent_at, format: :short %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-info no-objects-found">
+    <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::StockEmail)) %>,
+  </div>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Summary
+  </div>
+  <div class="panel-body">
+    <div>
+      <%= Spree.t(:awaiting_users) %>: <span class="label label-considered_risky"><%= @awaiting_users %></span>&nbsp;
+      <%= Spree.t(:notified_users) %>: <span class="label label-complete"><%= @notified_users %></span>
+    </div>
+    <br />
+    <% if @summary.any? %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><%= Spree.t(:variant) %></th>
+            <th><%= Spree.t(:sku) %></th>
+            <th><%= Spree.t(:requested_notifications) %></th>
+            <th><%= Spree.t(:sent_emails) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @summary.each do |row| %>
+            <tr>
+              <% variant = row.second.first.variant %>
+              <% stock_emails = row.second %>
+              <td><%= link_to variant.name, edit_admin_product_variant_path(variant.product.slug, variant.id) %></td>
+              <td><%= variant.sku %></td>
+              <% requested = stock_emails.select { |e| e.sent_at.nil? }.count %>
+              <% sent = stock_emails.count - requested %>
+              <td><%= requested %></td>
+              <td><%= sent %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="alert alert-info no-objects-found">
+        <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::StockEmail)) %>,
+      </div>
+    <% end %>
+  </div>
+</div>
