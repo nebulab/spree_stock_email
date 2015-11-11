@@ -9,7 +9,7 @@
       <div class="row">
         <div class="date-range-filter col-md-8">
           <div class="form-group">
-            <%= label_tag :q_created_at_gt, Spree.t(:notification_requested_at) %>
+            <%= label_tag :q_created_at_gt, Spree.t('stock_email.notification_requested_at') %>
             <div class="row no-padding-bottom">
               <div class="col-md-6">
                 <div class="input-group">
@@ -37,7 +37,7 @@
           <div class="field checkbox">
             <label>
               <%= f.check_box :sent_at_null, {:checked => params[:q][:sent_at_null] == '0'}, '0', '1' %>
-              <%= Spree.t(:email_already_sent) %>
+              <%= Spree.t('stock_email.email_already_sent') %>
             </label>
           </div>
         </div>
@@ -72,8 +72,8 @@
         <th><%= Spree.t(:email) %></th>
         <th><%= Spree.t(:sku) %></th>
         <th><%= Spree.t(:variant) %></th>
-        <th><%= sort_link @search, :created_at, Spree.t(:notification_requested_at) %></th>
-        <th><%= sort_link @search, :sent_at, Spree.t(:email_sent_at) %></th>
+        <th><%= sort_link @search, :created_at, Spree.t('stock_email.notification_requested_at') %></th>
+        <th><%= sort_link @search, :sent_at, Spree.t('stock_email.email_sent_at') %></th>
       </tr>
     </thead>
     <tbody>
@@ -82,7 +82,7 @@
           <td><%= stock_email.email %></td>
           <td><%= stock_email.variant.sku %></td>
           <td><%= link_to stock_email.variant.name, edit_admin_product_variant_path(stock_email.variant.product.slug, stock_email.variant.id) %></td>
-          <td><%= l stock_email.created_at, format: :short %></td>
+          <td><%= l stock_email.created_at, format: :long %></td>
           <td>
             <% if stock_email.sent_at.blank? %>
               -
@@ -106,8 +106,8 @@
   </div>
   <div class="panel-body">
     <div>
-      <%= Spree.t(:awaiting_users) %>: <span class="label label-considered_risky"><%= @awaiting_users %></span>&nbsp;
-      <%= Spree.t(:notified_users) %>: <span class="label label-complete"><%= @notified_users %></span>
+      <%= Spree.t('stock_email.awaiting_users') %>: <span class="label label-considered_risky"><%= @awaiting_users %></span>&nbsp;
+      <%= Spree.t('stock_email.notified_users') %>: <span class="label label-complete"><%= @notified_users %></span>
     </div>
     <br />
     <% if @summary.any? %>
@@ -116,8 +116,8 @@
           <tr>
             <th><%= Spree.t(:variant) %></th>
             <th><%= Spree.t(:sku) %></th>
-            <th><%= Spree.t(:requested_notifications) %></th>
-            <th><%= Spree.t(:sent_emails) %></th>
+            <th><%= Spree.t('stock_email.requested_notifications') %></th>
+            <th><%= Spree.t('stock_email.sent_emails') %></th>
           </tr>
         </thead>
         <tbody>

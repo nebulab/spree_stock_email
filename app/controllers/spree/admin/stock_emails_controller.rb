@@ -15,7 +15,7 @@ module Spree
           return @collection if defined?(@collection)
           params[:q] ||= HashWithIndifferentAccess.new
 
-          params[:q][:s] ||= 'id desc'
+          params[:q][:s] ||= 'created_at desc'
           @collection = super
           @search = @collection.ransack(params[:q])
           @collection = @search.result(distinct: true).

@@ -7,6 +7,9 @@ class Spree::StockEmail < ActiveRecord::Base
 
   validate :unique_variant_email
 
+  scope :not_sent, -> { where(sent_at: nil) }
+  scope :sent, -> { where.not(sent_at: nil) }
+
   def self.email_exists?(variant, email)
     exists?(sent_at: nil, variant_id: variant.id, email: email)
   end
@@ -25,11 +28,11 @@ class Spree::StockEmail < ActiveRecord::Base
   end
 
   def self.awaiting_users
-    Spree::StockEmail.where(sent_at: nil).size
+    not_sent.size
   end
 
   def self.notified_users
-    Spree::StockEmail.where.not(sent_at: nil).size
+    sent.size
   end
 
   def self.summary
