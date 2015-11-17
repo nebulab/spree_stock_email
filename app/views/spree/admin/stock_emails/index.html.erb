@@ -81,7 +81,7 @@
         <tr id="<%= spree_dom_id stock_email %>">
           <td><%= stock_email.email %></td>
           <td><%= stock_email.variant.sku %></td>
-          <td><%= link_to stock_email.variant.name, edit_admin_product_variant_path(stock_email.variant.product.slug, stock_email.variant.id) %></td>
+          <td><%= link_to variant_extended_name(stock_email.variant), edit_admin_product_variant_path(stock_email.variant.product.slug, stock_email.variant.id) %></td>
           <td><%= l stock_email.created_at, format: :long %></td>
           <td>
             <% if stock_email.sent_at.blank? %>
@@ -125,7 +125,7 @@
             <tr>
               <% variant = row.second.first.variant %>
               <% stock_emails = row.second %>
-              <td><%= link_to variant.name, edit_admin_product_variant_path(variant.product.slug, variant.id) %></td>
+              <td><%= link_to variant_extended_name(variant), edit_admin_product_variant_path(variant.product.slug, variant.id) %> </td>
               <td><%= variant.sku %></td>
               <% requested = stock_emails.select { |e| e.sent_at.nil? }.count %>
               <% sent = stock_emails.count - requested %>

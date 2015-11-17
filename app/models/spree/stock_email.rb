@@ -42,6 +42,10 @@ class Spree::StockEmail < ActiveRecord::Base
     reverse
   end
 
+  def self.variant_options_text_short(variant)
+    variant.option_values.map { |ov| "#{ov.presentation}" }.to_sentence({:words_connector => ", ", :two_words_connector => ", "})
+  end
+
   private
 
   def unique_variant_email
