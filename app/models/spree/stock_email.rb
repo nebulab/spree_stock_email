@@ -4,6 +4,7 @@ class Spree::StockEmail < ActiveRecord::Base
 
   validates :variant, presence: true
   validates :email, presence: true, email: true
+  validates :quantity, presence: true
 
   validate :unique_variant_email
 
