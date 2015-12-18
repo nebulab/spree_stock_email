@@ -8,6 +8,7 @@ en:
       notified_users: "Total users notified"
       sent_email: "Sent Emails"
       requested_notifications: "Requested Notifications"
+      total_requested_quantity: "Total Requested Quantity"
       email_already_sent: "Email Sent"
       notification_requested_at: "Notification Requested At"
       email_sent_at: "Email sent at"

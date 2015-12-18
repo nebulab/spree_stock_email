@@ -72,6 +72,7 @@
         <th><%= Spree.t(:email) %></th>
         <th><%= Spree.t(:sku) %></th>
         <th><%= Spree.t(:variant) %></th>
+        <th><%= Spree.t(:quantity) %></th>
         <th><%= sort_link @search, :created_at, Spree.t('stock_email.notification_requested_at') %></th>
         <th><%= sort_link @search, :sent_at, Spree.t('stock_email.email_sent_at') %></th>
       </tr>
@@ -82,6 +83,7 @@
           <td><%= stock_email.email %></td>
           <td><%= stock_email.variant.sku %></td>
           <td><%= link_to variant_extended_name(stock_email.variant), edit_admin_product_variant_path(stock_email.variant.product.slug, stock_email.variant.id) %></td>
+          <td><%= stock_email.quantity %></td>
           <td><%= l stock_email.created_at, format: :long %></td>
           <td>
             <% if stock_email.sent_at.blank? %>
@@ -116,6 +118,7 @@
           <tr>
             <th><%= Spree.t(:variant) %></th>
             <th><%= Spree.t(:sku) %></th>
+            <th><%= Spree.t('stock_email.total_requested_quantities') %></th>
             <th><%= Spree.t('stock_email.requested_notifications') %></th>
             <th><%= Spree.t('stock_email.sent_emails') %></th>
           </tr>
@@ -129,6 +132,7 @@
               <td><%= variant.sku %></td>
               <% requested = stock_emails.select { |e| e.sent_at.nil? }.count %>
               <% sent = stock_emails.count - requested %>
+              <td><%= stock_emails.sum(&:quantity) %></td>
               <td><%= requested %></td>
               <td><%= sent %></td>
             </tr>
