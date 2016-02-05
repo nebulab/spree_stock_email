@@ -1,0 +1,12 @@
+<%= form_for :stock_email, url: variant_stock_emails_path do |form| %>
+  <% unless spree_current_user %>
+    <%= form.label :email, "Your email address" %>
+    <%= form.text_field :email %>
+  <% end %>
+  <%= form.label :quantity, "Quantity" %>
+  <%= form.number_field :quantity%>
+  <%= form.hidden_field :variant, value: @variant.id %>
+  <%= button_tag class: 'button', type: :submit do %>
+    Notify me
+  <% end %>
+<% end %>
