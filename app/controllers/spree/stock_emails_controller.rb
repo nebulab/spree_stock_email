@@ -5,7 +5,7 @@ class Spree::StockEmailsController < ApplicationController
   end
 
   def create
-    variant = Spree::Variant.find_by_id(params[:stock_email][:variant])
+    variant = Spree::Variant.find_by_id(params[:stock_email][:variant] || params[:variant_id])
 
     stock_email = Spree::StockEmail.new
     stock_email.email = spree_current_user ? spree_current_user.email : params[:stock_email][:email]
