@@ -1,4 +1,5 @@
 Spree::Core::Engine.routes.draw do
+  resources :stock_emails, :only => [:create]
 
   resources :variants, :only => [] do
     resources :stock_emails, :only => [:new, :create]
