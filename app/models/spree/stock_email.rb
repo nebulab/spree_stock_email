@@ -15,7 +15,7 @@ class Spree::StockEmail < ActiveRecord::Base
   end
 
   def self.notify(variant)
-    where(sent_at: nil, variant_id: variant.id).each { |e| e.notify }
+    where(sent_at: nil, variant_id: [variant.id, variant.product.master.id]).each { |e| e.notify }
   end
 
   def email_exists?

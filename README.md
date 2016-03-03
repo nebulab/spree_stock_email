@@ -13,7 +13,7 @@ Here is a basic partial:
   <% end %>
 <% else %>
   <%= form_for :stock_email, url: stock_emails_path do |form| %>
-    <%= form.hidden_field :product, value: @product.id %>
+    <%= form.hidden_field :variant, value: @product.master.id %>
     <%= form.label :email, "Your email address" %>
     <%= form.text_field :email %>
     <%= button_tag class: 'button', type: :submit do %>
